@@ -1,0 +1,7 @@
+{
+    "name": "ringcentral/webhook-demo",
+    "description": "Hello RingCentral",
+    "require": {
+        "ringcentral/ringcentral-php": "2.2.1"
+    }
+}
