@@ -5,15 +5,19 @@ $rcsdk = new RingCentral\SDK\SDK(getenv('RINGCENTRAL_CLIENT_ID'),
                                  getenv('RINGCENTRAL_CLIENT_SECRET'),
       	                         getenv('RINGCENTRAL_SERVER_URL'));
 $platform = $rcsdk->platform();
-$platform->login( getenv('RINGCENTRAL_USERNAME'),
+$platform->login(getenv('RINGCENTRAL_USERNAME'),
                   getenv('RINGCENTRAL_EXTENSION'),
                   getenv('RINGCENTRAL_PASSWORD'));
-$r = $platform->post('/account/~/extension/~/sms', array(
-    'from' => array('phoneNumber' => getenv('RINGCENTRAL_USERNAME')),
-    'to' => array(
-        array('phoneNumber' => getenv('RINGCENTRAL_RECEIVER')),
+
+
+$r = $platform->post('/subscription', array(
+    "eventFilters" => array(
+        "/restapi/v1.0/account/~/extension/~/presence?detailedTelephonyState=true"
     ),
-    'text' => 'Message content',
+    "deliveryMode" => array(
+        "transportType" => "WebHook",
+        "address" => "https://73d0110a.ap.ngrok.io"
+    )
 ));
 
-print("Message ID: " . $r->json()->id . "\n");
+print("Subscription ID: " . $r->json()->id . "\n");
