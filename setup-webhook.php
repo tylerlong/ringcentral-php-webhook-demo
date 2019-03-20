@@ -16,7 +16,7 @@ $r = $platform->post('/subscription', array(
     ),
     "deliveryMode" => array(
         "transportType" => "WebHook",
-        "address" => "https://73d0110a.ap.ngrok.io"
+        "address" => ""
     )
 ));
 
