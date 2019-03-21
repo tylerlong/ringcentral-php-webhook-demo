@@ -1,9 +1,18 @@
 <?php
+require('vendor/autoload.php');
 
-$validationToken = $_SERVER['HTTP_VALIDATION_TOKEN'];
-header("Validation-Token: {$validationToken}");
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 
-$jsonBody = file_get_contents('php://input');
-file_put_contents('php://stderr', json_encode($jsonBody, TRUE) . "\n");
+$app = new \Slim\App;
+$app->post('/', function (Request $request, Response $response, array $args) {
+    $body = $request->getBody();
+    file_put_contents('php://stderr', $body . "\n");
 
-// you can do whatever with $jsonBody depending on your requirements
+    // you can do whatever with $body depending on your requirements
+
+    $response = $response->withHeader('Validation-Token', $request->getHeader('Validation-Token'));
+    $response->getBody()->write("");
+    return $response;
+});
+$app->run();
